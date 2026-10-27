@@ -1,0 +1,32 @@
+/* 3 · Editorial: serif headlines, hairline rules, lots of whitespace — reads like a printed report. */
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Inter:wght@400;500;600&display=swap");
+:root:root {
+  --bg: #fbf9f4; --surface: #fbf9f4; --surface-2: #efebe2; --border: #d9d3c5;
+  --text: #1a1814; --muted: #7a7466; --accent: #9b2c2c; --accent-text: #fff;
+  --good: #2b6b3f; --ok: #a06a00; --bad: #9b2c2c;
+  --easy: #2b6b3f; --medium: #a06a00; --hard: #9b2c2c;
+}
+body { font-family: "Inter", system-ui, sans-serif; }
+header { border-bottom: 2px solid var(--text); }
+.brand { font-family: "Fraunces", serif; font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
+nav button { text-transform: uppercase; font-size: 12px; letter-spacing: 0.12em; font-weight: 600; }
+nav button.active { background: none; box-shadow: inset 0 -2px var(--accent); border-radius: 0; }
+main { max-width: 880px; }
+h2 { font-family: "Fraunces", serif; font-size: 30px; font-weight: 600; letter-spacing: -0.02em; margin-top: 44px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+.card { border: 0; border-radius: 0; padding: 14px 0; background: transparent; }
+.grid { gap: 32px; }
+.grid .card { border-top: 1px solid var(--text); padding-top: 16px; }
+.grid .card .title { font-family: "Fraunces", serif; font-size: 22px; font-weight: 600; }
+.grid .card .big-score { font-family: "Fraunces", serif; font-size: 40px; font-weight: 400; width: 100%; line-height: 1.1; }
+.tiles { gap: 0; border-top: 1px solid var(--text); border-bottom: 1px solid var(--border); }
+.tile { border-right: 1px solid var(--border) !important; padding: 18px 16px !important; }
+.tile .num { font-family: "Fraunces", serif; font-size: 44px; font-weight: 400; }
+.btn { border-radius: 0; border-color: var(--text); background: transparent; font-size: 13px; }
+.btn.primary { background: var(--text); border-color: var(--text); color: var(--bg); }
+.chip { background: none; border-radius: 0; padding: 0; text-transform: uppercase; letter-spacing: 0.08em; font-size: 11px; }
+.chip + .chip::before { content: "· "; }
+.track { height: 4px; border-radius: 0; }
+.fill { border-radius: 0; }
+th { font-family: "Inter"; letter-spacing: 0.1em; }
+.activity div { border-radius: 0; background: var(--text); }
+.prob { padding: 10px 0; }

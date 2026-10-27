@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NeetCode Review</title>
+<style>
+  :root {
+    --bg: #f7f7f5; --surface: #ffffff; --surface-2: #f0efeb; --border: #e2e0da;
+    --text: #1d1d1b; --muted: #6b6a65; --accent: #3b5bdb; --accent-text: #fff;
+    --good: #2f9e44; --ok: #e8a317; --bad: #e03131;
+    --easy: #2f9e44; --medium: #d9480f; --hard: #c2255c;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #151514; --surface: #1f1f1d; --surface-2: #2a2a27; --border: #363632;
+      --text: #ecebe6; --muted: #9a9993; --accent: #748ffc; --accent-text: #10122b;
+      --good: #51cf66; --ok: #fcc419; --bad: #ff6b6b;
+      --easy: #51cf66; --medium: #ff922b; --hard: #f06595;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  a { color: inherit; }
+  header { position: sticky; top: 0; z-index: 5; background: var(--bg); border-bottom: 1px solid var(--border); }
+  .bar { max-width: 960px; margin: 0 auto; padding: 12px 16px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .brand { font-weight: 700; letter-spacing: -0.01em; }
+  nav { display: flex; gap: 4px; margin-left: auto; }
+  nav button { background: none; border: 0; padding: 6px 12px; border-radius: 8px; color: var(--muted); font: inherit; cursor: pointer; }
+  nav button.active { background: var(--surface-2); color: var(--text); font-weight: 600; }
+  main { max-width: 960px; margin: 0 auto; padding: 20px 16px 64px; }
+  h2 { font-size: 18px; margin: 28px 0 10px; }
+  h2:first-child { margin-top: 0; }
+  .muted { color: var(--muted); }
+  .small { font-size: 13px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+  .grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+  .tiles { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+  .tile .num { font-size: 28px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .tile .lbl { color: var(--muted); font-size: 13px; }
+  .btn { border: 1px solid var(--border); background: var(--surface); color: var(--text); padding: 6px 12px; border-radius: 8px; font: inherit; font-size: 14px; cursor: pointer; }
+  .btn:hover { background: var(--surface-2); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-text); font-weight: 600; }
+  .btn.danger { color: var(--bad); }
+  .btn.sm { padding: 3px 9px; font-size: 13px; }
+  .row-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+  .chip { display: inline-block; font-size: 12px; padding: 1px 8px; border-radius: 99px; background: var(--surface-2); color: var(--muted); white-space: nowrap; }
+  .d-Easy { color: var(--easy); } .d-Medium { color: var(--medium); } .d-Hard { color: var(--hard); }
+  .score { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .s-good { color: var(--good); } .s-ok { color: var(--ok); } .s-bad { color: var(--bad); }
+  .g-clean { color: var(--good); } .g-slow { color: var(--ok); } .g-failed { color: var(--bad); }
+  .title { font-weight: 600; text-decoration: none; }
+  .title:hover { text-decoration: underline; }
+  .meta { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 4px; font-size: 13px; }
+  .timer { font-variant-numeric: tabular-nums; font-weight: 700; font-size: 20px; margin-top: 10px; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  th { font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .table-wrap { overflow-x: auto; }
+  .topic { margin-top: 18px; }
+  .topic-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding: 0 2px 6px; }
+  .topic-head h3 { margin: 0; font-size: 15px; }
+  .prob { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .prob:first-child { border-top: 0; }
+  .prob .name { flex: 1 1 220px; min-width: 0; }
+  .prob.todo .title { color: var(--muted); font-weight: 500; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--border); flex: none; }
+  .history { width: 100%; padding: 4px 0 4px 19px; font-size: 13px; }
+  .history td { padding: 4px 6px; }
+  .barrow { display: grid; grid-template-columns: minmax(110px, 190px) 1fr 52px; gap: 10px; align-items: center; padding: 5px 0; font-size: 14px; }
+  .track { height: 10px; background: var(--surface-2); border-radius: 99px; overflow: hidden; position: relative; }
+  .fill { height: 100%; border-radius: 99px; }
+  .activity { display: flex; align-items: flex-end; gap: 3px; height: 70px; }
+  .activity div { flex: 1; background: var(--accent); border-radius: 3px 3px 0 0; min-height: 2px; opacity: 0.85; }
+  .activity div.zero { background: var(--surface-2); opacity: 1; }
+  .toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  input[type=search], input[type=number], input[type=text], textarea, select { font: inherit; color: var(--text); background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; }
+  input[type=search] { flex: 1 1 200px; }
+  .banner { background: var(--surface-2); border-radius: 10px; padding: 10px 14px; margin-bottom: 16px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; font-size: 14px; }
+  .empty { text-align: center; padding: 40px 16px; color: var(--muted); }
+  dialog { border: 1px solid var(--border); border-radius: 14px; background: var(--surface); color: var(--text); padding: 20px; width: min(420px, calc(100vw - 32px)); }
+  dialog::backdrop { background: rgb(0 0 0 / 0.4); }
+  dialog h3 { margin: 0 0 4px; }
+  .field { margin-top: 14px; display: grid; gap: 6px; }
+  .field label { font-size: 13px; color: var(--muted); font-weight: 600; }
+  .seg { display: flex; gap: 6px; }
+  .seg button { flex: 1; }
+  .seg button.on { background: var(--accent); border-color: var(--accent); color: var(--accent-text); font-weight: 600; }
+  .settings { display: flex; gap: 14px; flex-wrap: wrap; align-items: end; }
+  .settings label { display: grid; gap: 4px; font-size: 13px; color: var(--muted); }
+  .settings input { width: 90px; }
+  .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--text); color: var(--bg); padding: 8px 16px; border-radius: 99px; font-size: 14px; opacity: 0; transition: opacity .2s; pointer-events: none; }
+  .toast.show { opacity: 1; }
+</style>
+<link rel="stylesheet" href="themes/1-terminal.css">
+</head>
+<body>
+<header>
+  <div class="bar">
+    <span class="brand">NeetCode 150 · Review</span>
+    <nav>
+      <button data-tab="review" class="active">Review</button>
+      <button data-tab="problems">Problems</button>
+      <button data-tab="summary">Summary</button>
+    </nav>
+  </div>
+</header>
+<main>
+  <div id="banner"></div>
+  <section id="tab-review"></section>
+  <section id="tab-problems" hidden></section>
+  <section id="tab-summary" hidden></section>
+</main>
+
+<dialog id="log">
+  <form method="dialog" id="log-form">
+    <h3 id="log-title"></h3>
+    <div class="muted small" id="log-sub"></div>
+    <div class="field">
+      <label>Did you solve it without looking at the solution?</label>
+      <div class="seg">
+        <button type="button" class="btn" data-solved="1">Yes</button>
+        <button type="button" class="btn" data-solved="0">No</button>
+      </div>
+    </div>
+    <div class="field">
+      <label for="log-min">Minutes taken</label>
+      <input type="number" id="log-min" min="1" max="600" step="1" required>
+    </div>
+    <div class="field">
+      <label for="log-date">When</label>
+      <input type="text" id="log-date" placeholder="YYYY-MM-DD HH:MM">
+    </div>
+    <div class="field">
+      <label for="log-note">Note (optional): what tripped you up?</label>
+      <textarea id="log-note" rows="2"></textarea>
+    </div>
+    <p class="small" id="log-grade"></p>
+    <div class="row-actions" style="justify-content:flex-end">
+      <button type="button" class="btn" id="log-cancel">Cancel</button>
+      <button type="submit" class="btn primary">Save</button>
+    </div>
+  </form>
+</dialog>
+<input type="file" id="import-file" accept="application/json,.json" hidden>
+<div class="toast" id="toast"></div>
+
+<script src="seed.js"></script>
+<script src="../problems.js"></script>
+<script src="../srs.js"></script>
+<script src="../app.js"></script>
+</body>
+</html>

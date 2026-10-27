@@ -1,0 +1,30 @@
+/* 2 · Playful: chunky pressable buttons, big rounded cards, colour-coded by difficulty. */
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&display=swap");
+:root:root {
+  --bg: #f4f1ff; --surface: #ffffff; --surface-2: #ece8fb; --border: #e0daf5;
+  --text: #2b2350; --muted: #7b72a3; --accent: #7048e8; --accent-text: #fff;
+  --good: #20c997; --ok: #fab005; --bad: #ff6b6b;
+  --easy: #12b886; --medium: #f76707; --hard: #e64980;
+}
+body { font-family: "Nunito", system-ui, sans-serif; font-weight: 600; }
+header { background: var(--accent); border: 0; }
+.brand, nav button { color: #fff !important; }
+nav button.active { background: rgb(255 255 255 / 0.22); }
+h2 { font-size: 22px; font-weight: 900; }
+.card { border-radius: 20px; border: 2px solid var(--border); box-shadow: 0 4px 0 var(--border); }
+.grid .card { border-top: 8px solid var(--easy); padding: 18px 20px; }
+.grid .card:has(.d-Medium) { border-top-color: var(--medium); }
+.grid .card:has(.d-Hard) { border-top-color: var(--hard); }
+.grid .card .title { font-size: 18px; font-weight: 900; }
+.grid .card .big-score { font-size: 26px; display: block; width: 100%; }
+.btn { border-radius: 14px; border-width: 2px; font-weight: 800; box-shadow: 0 3px 0 var(--border); transition: transform .05s, box-shadow .05s; }
+.btn:active { transform: translateY(3px); box-shadow: none; }
+.btn.primary { box-shadow: 0 4px 0 #5034b8; }
+.chip { font-weight: 800; border-radius: 10px; padding: 2px 10px; }
+.tile { text-align: center; }
+.tile .num { font-size: 34px; font-weight: 900; }
+.track { height: 16px; border-radius: 99px; }
+.fill { border-radius: 99px; box-shadow: inset 0 -4px rgb(0 0 0 / 0.12); }
+.activity div { border-radius: 6px; background: var(--accent); }
+.dot { width: 12px; height: 12px; }
+.prob { padding: 10px 16px; }

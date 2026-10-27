@@ -1,0 +1,35 @@
+/* 4 · Midnight: dark product-dashboard look — glass cards, gradient accents, glowing scores. */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+:root:root {
+  --bg: #0b0d1a; --surface: rgb(255 255 255 / 0.04); --surface-2: rgb(255 255 255 / 0.07); --border: rgb(255 255 255 / 0.09);
+  --text: #e7e9f5; --muted: #8b90ad; --accent: #8b7bff; --accent-text: #fff;
+  --good: #4ade80; --ok: #facc15; --bad: #fb7185;
+  --easy: #4ade80; --medium: #fbbf24; --hard: #fb7185;
+}
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  background: radial-gradient(1200px 600px at 10% -10%, #2a1f6b 0%, transparent 60%),
+              radial-gradient(900px 500px at 100% 0%, #0e3a5c 0%, transparent 55%), var(--bg);
+  background-attachment: fixed; min-height: 100vh;
+}
+header { background: rgb(11 13 26 / 0.6); backdrop-filter: blur(12px); }
+.brand { background: linear-gradient(90deg, #a79bff, #5ad1ff); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 800; }
+nav { background: var(--surface); border: 1px solid var(--border); padding: 3px; border-radius: 10px; }
+nav button.active { background: var(--surface-2); }
+.card { backdrop-filter: blur(10px); border-radius: 16px; box-shadow: 0 1px 0 rgb(255 255 255 / 0.05) inset, 0 10px 30px rgb(0 0 0 / 0.25); }
+.grid .card { position: relative; overflow: hidden; }
+.grid .card::after { content: ""; position: absolute; inset: 0 0 auto; height: 2px; background: linear-gradient(90deg, #8b7bff, #5ad1ff); opacity: .7; }
+.grid .card .big-score { font-size: 30px; width: 100%; }
+.score.s-good { text-shadow: 0 0 18px rgb(74 222 128 / 0.45); }
+.score.s-ok { text-shadow: 0 0 18px rgb(250 204 21 / 0.4); }
+.score.s-bad { text-shadow: 0 0 18px rgb(251 113 133 / 0.5); }
+.btn { border-radius: 10px; background: var(--surface); }
+.btn.primary { background: linear-gradient(135deg, #8b7bff, #5a8bff); border: 0; box-shadow: 0 6px 20px rgb(139 123 255 / 0.35); }
+.chip { background: var(--surface-2); border: 1px solid var(--border); }
+.tile .num { font-size: 32px; letter-spacing: -0.02em; }
+.track { background: rgb(255 255 255 / 0.06); height: 8px; }
+.fill { background: linear-gradient(90deg, #8b7bff, #5ad1ff) !important; box-shadow: 0 0 12px rgb(139 123 255 / 0.5); }
+.activity div { background: linear-gradient(180deg, #5ad1ff, #8b7bff); }
+tbody tr:hover { background: var(--surface-2); }
+input, select, textarea { background: var(--surface) !important; }
+dialog { background: #151830; }

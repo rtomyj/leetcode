@@ -1,0 +1,102 @@
+/* 6 · Material 3: Material You teal scheme — tonal surfaces, pill buttons, segmented nav, light + dark. */
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Flex:opsz,wght@8..144,400;8..144,500&display=swap");
+:root:root {
+  /* teal scheme, seed #006A60 */
+  --md-primary: #006a60; --md-on-primary: #fff;
+  --md-primary-container: #9ef2e4; --md-on-primary-container: #00201c;
+  --md-secondary-container: #cce8e2; --md-on-secondary-container: #051f1c;
+  --md-tertiary-container: #cce7ff;
+  --md-surface: #f4fbf8; --md-surface-low: #eff5f2; --md-surface-container: #e9efec; --md-surface-high: #e3eae7;
+  --md-on-surface: #171d1b; --md-on-surface-variant: #3f4946;
+  --md-outline: #6f7976; --md-outline-variant: #bec9c5;
+  --md-error: #b3261e; --md-error-container: #f9dedc;
+  /* map onto the app's tokens */
+  --bg: var(--md-surface); --surface: var(--md-surface-low); --surface-2: var(--md-surface-high); --border: var(--md-outline-variant);
+  --text: var(--md-on-surface); --muted: var(--md-on-surface-variant); --accent: var(--md-primary); --accent-text: var(--md-on-primary);
+  --good: #386a20; --ok: #8a5100; --bad: var(--md-error);
+  --easy: #386a20; --medium: #8a5100; --hard: #b3261e;
+}
+@media (prefers-color-scheme: dark) {
+  :root:root {
+    --md-primary: #82d5c8; --md-on-primary: #003731;
+    --md-primary-container: #005048; --md-on-primary-container: #9ef2e4;
+    --md-secondary-container: #334b47; --md-on-secondary-container: #cce8e2;
+    --md-tertiary-container: #314a5e;
+    --md-surface: #0e1513; --md-surface-low: #171d1b; --md-surface-container: #1b211f; --md-surface-high: #252b2a;
+    --md-on-surface: #dee4e1; --md-on-surface-variant: #bec9c5;
+    --md-outline: #899390; --md-outline-variant: #3f4946;
+    --md-error: #f2b8b5; --md-error-container: #8c1d18;
+    --good: #9cd67d; --ok: #ffb870; --easy: #9cd67d; --medium: #ffb870; --hard: #f2b8b5;
+  }
+}
+body { font-family: "Roboto", system-ui, sans-serif; font-size: 14px; letter-spacing: 0.016em; }
+
+/* Top app bar + segmented-button navigation */
+header { background: var(--md-surface-container); border: 0; }
+.bar { padding: 14px 16px; }
+.brand { font-size: 22px; font-weight: 400; letter-spacing: 0; }
+nav { gap: 0; border: 1px solid var(--md-outline); border-radius: 20px; overflow: hidden; }
+nav button { height: 40px; padding: 0 18px; border-radius: 0; color: var(--md-on-surface); font-weight: 500; letter-spacing: 0.1px; }
+nav button + button { border-left: 1px solid var(--md-outline); }
+nav button.active { background: var(--md-secondary-container); color: var(--md-on-secondary-container); font-weight: 500; }
+nav button.active::before { content: "✓ "; }
+
+/* Typography scale: headline-small / title-medium */
+h2 { font-family: "Roboto Flex", "Roboto", sans-serif; font-size: 24px; font-weight: 400; margin-top: 32px; }
+h2 + p.muted { margin-top: -4px; }
+
+/* Cards: filled for content, tonal primary-container for the session */
+.card { background: var(--md-surface-container); border: 0; border-radius: 12px; }
+.grid .card { background: var(--md-surface-low); border: 1px solid var(--md-outline-variant); padding: 16px; transition: box-shadow .2s; }
+.grid .card:hover { box-shadow: 0 1px 2px rgb(0 0 0 / .3), 0 2px 6px 2px rgb(0 0 0 / .15); }
+.grid .card:has(.s-bad) { background: var(--md-error-container); border-color: transparent; }
+.grid .card .title { font-size: 16px; font-weight: 500; }
+.grid .card .big-score { font-family: "Roboto Flex", "Roboto"; font-size: 45px; font-weight: 400; line-height: 52px; width: 100%; letter-spacing: 0; }
+
+/* Buttons: filled / tonal / text / outlined, all 40dp pills with state layers */
+.btn { height: 40px; padding: 0 24px; border-radius: 20px; border: 1px solid var(--md-outline); background: transparent; color: var(--md-primary); font-weight: 500; letter-spacing: 0.1px; position: relative; }
+.btn.sm { height: 32px; padding: 0 16px; border-radius: 16px; font-size: 13px; }
+.btn:hover { background: color-mix(in srgb, var(--md-primary) 8%, transparent); }
+.btn:active { background: color-mix(in srgb, var(--md-primary) 12%, transparent); }
+.btn.primary { background: var(--md-primary); color: var(--md-on-primary); border: 0; }
+.btn.primary:hover { background: color-mix(in srgb, var(--md-on-primary) 8%, var(--md-primary)); box-shadow: 0 1px 2px rgb(0 0 0 / .3), 0 1px 3px 1px rgb(0 0 0 / .15); }
+.grid [data-act="log"] { background: var(--md-secondary-container); color: var(--md-on-secondary-container); border: 0; }
+.grid [data-act="skip"], .grid [data-act="cancel-timer"] { border: 0; padding: 0 12px; }
+.btn.danger { color: var(--md-error); border-color: var(--md-error); }
+
+/* Assist chips */
+.chip { height: 28px; line-height: 26px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--md-outline-variant); background: transparent; color: var(--md-on-surface-variant); font-weight: 500; }
+.grid .card:has(.s-bad) .chip { border-color: color-mix(in srgb, var(--md-on-surface) 25%, transparent); }
+
+/* Stat tiles */
+.tile { padding: 16px 20px !important; }
+.tile .num { font-family: "Roboto Flex", "Roboto"; font-size: 36px; font-weight: 400; }
+.tile .lbl { font-size: 12px; font-weight: 500; letter-spacing: 0.5px; }
+
+/* Linear progress indicator: 4dp, rounded, track gap + stop dot */
+.track { height: 4px; background: var(--md-secondary-container); overflow: visible; }
+.track::after { content: ""; position: absolute; right: 0; top: 0; width: 4px; height: 4px; border-radius: 50%; background: var(--md-primary); }
+.fill { background: var(--md-primary) !important; box-shadow: 4px 0 0 var(--md-surface-container); }
+
+/* Lists / tables */
+table th { text-transform: none; letter-spacing: 0.1px; font-size: 14px; color: var(--md-on-surface-variant); font-weight: 500; }
+th, td { border-color: var(--md-outline-variant); padding: 10px 12px; }
+tbody tr:hover { background: color-mix(in srgb, var(--md-on-surface) 8%, transparent); }
+.prob { min-height: 56px; padding: 8px 16px; border-color: var(--md-outline-variant); }
+.prob:hover { background: color-mix(in srgb, var(--md-on-surface) 6%, transparent); }
+
+/* Activity bars, inputs, dialog, snackbar */
+.activity div { background: var(--md-primary); border-radius: 4px 4px 0 0; }
+.activity div.zero { background: var(--md-secondary-container); }
+input[type=search] { height: 48px; border-radius: 24px; border: 0; padding: 0 20px; background: var(--md-surface-high); }
+input[type=number], input[type=text], textarea, select { border-radius: 4px; border: 1px solid var(--md-outline); background: transparent; min-height: 40px; }
+input:focus, textarea:focus, select:focus { outline: 2px solid var(--md-primary); outline-offset: -1px; }
+dialog { background: var(--md-surface-high); border: 0; border-radius: 28px; padding: 24px; }
+dialog h3 { font-size: 24px; font-weight: 400; }
+.seg { gap: 0; border: 1px solid var(--md-outline); border-radius: 20px; overflow: hidden; }
+.seg button { border: 0; border-radius: 0; }
+.seg button + button { border-left: 1px solid var(--md-outline); }
+.seg button.on { background: var(--md-secondary-container); color: var(--md-on-secondary-container); }
+.seg button.on::before { content: "✓ "; }
+.banner { background: var(--md-tertiary-container); border-radius: 12px; }
+.toast { border-radius: 4px; background: #322f35; color: #f5eff7; padding: 14px 16px; }
