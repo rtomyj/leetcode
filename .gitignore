@@ -1,0 +1,20 @@
+# OS / editor clutter
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*~
+
+# Claude Code personal settings (shared .claude/settings.json stays tracked)
+.claude/settings.local.json
+
+# Headless-Chrome screenshots from visual checks
+*.png
+
+# Scratch copies of the page made to inject mockups/seed.js
+*.seeded.html
+index.*.html
+
+# Never ignore the durable progress log — it's meant to be committed
+!progress.json

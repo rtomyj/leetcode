@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NeetCode Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+<style>
+  /* Google Workspace-style Material 3 (the Gmail / Drive look): fixed blue brand
+     tones, white content panel on a blue-grey app background. The --gm-* palette is
+     mapped onto the app's own tokens, which is all the component rules reference. */
+  :root {
+    --gm-primary: #0b57d0; --gm-on-primary: #fff;
+    --gm-nav-active: #d3e3fd; --gm-on-nav-active: #041e49;
+    --gm-fab: #c2e7ff; --gm-on-fab: #001d35;
+    --gm-app-bg: #f8fafd; --gm-panel: #fff; --gm-surface-1: #f0f4f9; --gm-surface-2: #e9eef6; --gm-hover: #f2f6fc;
+    --gm-on-surface: #1f1f1f; --gm-on-surface-variant: #444746;
+    --gm-outline: #747775; --gm-outline-variant: #c4c7c5; --gm-divider: #e1e3e1;
+    --gm-error: #b3261e; --gm-snackbar: #303030; --gm-on-snackbar: #f2f2f2;
+    --gm-info: #e8f0fe;
+
+    --bg: var(--gm-app-bg); --surface: var(--gm-panel); --surface-2: var(--gm-surface-2); --border: var(--gm-divider);
+    --text: var(--gm-on-surface); --muted: var(--gm-on-surface-variant); --accent: var(--gm-primary); --accent-text: var(--gm-on-primary);
+    --good: #146c2e; --ok: #8c4a00; --bad: var(--gm-error);
+    --easy: #146c2e; --medium: #8c4a00; --hard: #b3261e;
+    --shadow-1: 0 1px 2px 0 rgb(60 64 67 / .3), 0 1px 3px 1px rgb(60 64 67 / .15);
+    --shadow-2: 0 1px 3px 0 rgb(60 64 67 / .3), 0 4px 8px 3px rgb(60 64 67 / .15);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --gm-primary: #a8c7fa; --gm-on-primary: #062e6f;
+      --gm-nav-active: #004a77; --gm-on-nav-active: #c2e7ff;
+      --gm-fab: #004a77; --gm-on-fab: #c2e7ff;
+      --gm-app-bg: #131314; --gm-panel: #1e1f20; --gm-surface-1: #282a2c; --gm-surface-2: #333537; --gm-hover: #2b2c2e;
+      --gm-on-surface: #e3e3e3; --gm-on-surface-variant: #c4c7c5;
+      --gm-outline: #8e918f; --gm-outline-variant: #444746; --gm-divider: #3c4043;
+      --gm-error: #f2b8b5; --gm-snackbar: #e3e3e3; --gm-on-snackbar: #1f1f1f;
+      --gm-info: #0b2a4d;
+      --good: #6dd58c; --ok: #ffb870; --easy: #6dd58c; --medium: #ffb870; --hard: #f2b8b5;
+      --shadow-1: 0 1px 2px 0 rgb(0 0 0 / .5), 0 1px 3px 1px rgb(0 0 0 / .3);
+      --shadow-2: 0 1px 3px 0 rgb(0 0 0 / .5), 0 4px 8px 3px rgb(0 0 0 / .3);
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.43 "Google Sans Text", "Google Sans", "Roboto", system-ui, -apple-system, "Segoe UI", sans-serif; letter-spacing: 0.01em; }
+  a { color: inherit; }
+  svg.icon { width: 20px; height: 20px; fill: currentColor; flex: none; }
+  .muted { color: var(--muted); }
+  .small { font-size: 13px; }
+
+  /* App bar: brand + pill search */
+  header { position: sticky; top: 0; z-index: 5; background: var(--bg); }
+  .bar { display: flex; align-items: center; gap: 16px; padding: 8px 16px; height: 64px; }
+  .brand { display: flex; align-items: center; gap: 10px; width: 232px; flex: none; font-family: "Google Sans", "Roboto", sans-serif; font-size: 22px; color: var(--muted); }
+  .logo { width: 32px; height: 32px; border-radius: 8px; background: var(--accent); color: var(--accent-text); display: grid; place-items: center; font-weight: 700; font-size: 15px; }
+  .search { flex: 0 1 720px; display: flex; align-items: center; gap: 12px; height: 48px; padding: 0 16px; border-radius: 24px; background: var(--gm-surface-2); color: var(--muted); }
+  .search:focus-within { background: var(--surface); box-shadow: var(--shadow-1); }
+  .search input { flex: 1; border: 0; background: none; outline: none; font: inherit; font-size: 16px; color: var(--text); min-width: 0; }
+
+  /* Shell: sidebar + content panel */
+  .shell { display: flex; gap: 8px; padding: 0 16px 16px 0; min-height: calc(100vh - 64px); }
+  aside { width: 256px; flex: none; padding: 8px 0 8px 8px; position: sticky; top: 64px; align-self: flex-start; }
+  .fab { display: inline-flex; align-items: center; gap: 12px; height: 56px; padding: 0 20px 0 16px; margin: 0 0 16px 0; border: 0; border-radius: 16px; background: var(--gm-fab); color: var(--gm-on-fab); font: 500 14px "Google Sans", "Roboto", sans-serif; letter-spacing: 0.01em; cursor: pointer; transition: box-shadow .15s; }
+  .fab:hover { box-shadow: var(--shadow-2); }
+  .fab svg.icon { width: 24px; height: 24px; }
+  nav { display: flex; flex-direction: column; }
+  nav button { display: flex; align-items: center; gap: 18px; height: 32px; padding: 0 12px 0 16px; margin-right: 8px; border: 0; border-radius: 16px; background: none; color: var(--text); font: inherit; cursor: pointer; text-align: left; }
+  nav button:hover { background: color-mix(in srgb, var(--text) 8%, transparent); }
+  nav button.active { background: var(--gm-nav-active); color: var(--gm-on-nav-active); font-weight: 700; }
+  nav .label { flex: 1; }
+  nav .badge { font-size: 12px; font-weight: 700; }
+  main { flex: 1; min-width: 0; background: var(--surface); border-radius: 16px; padding: 20px 24px 48px; }
+  @media (max-width: 760px) {
+    .brand { width: auto; } .brand span:last-child { display: none; }
+    .shell { flex-direction: column; padding: 0 8px 8px; gap: 4px; }
+    aside { position: static; width: auto; padding: 0; display: flex; gap: 8px; align-items: center; overflow-x: auto; }
+    .fab { height: 40px; margin: 0; border-radius: 12px; padding: 0 14px; white-space: nowrap; }
+    nav { flex-direction: row; gap: 4px; }
+    nav button { white-space: nowrap; margin: 0; }
+    main { padding: 16px; }
+  }
+
+  h2 { font: 400 22px/1.3 "Google Sans", "Roboto", sans-serif; margin: 28px 0 8px; }
+  h2:first-child { margin-top: 0; }
+  h2 + p.muted { margin-top: -2px; }
+
+  /* Cards (Drive "suggested" style) */
+  .card { background: var(--gm-surface-1); border-radius: 12px; padding: 14px 16px; }
+  .grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+  .grid .card { padding: 16px; transition: background .15s, box-shadow .15s; }
+  .grid .card:hover { background: color-mix(in srgb, var(--text) 4%, var(--gm-surface-1)); }
+  .grid .card .title { font: 500 16px "Google Sans", "Roboto", sans-serif; }
+  .big-score { font: 400 40px/48px "Google Sans", "Roboto", sans-serif; margin-top: 8px; }
+  .card.flat { background: none; padding: 0; border: 1px solid var(--border); overflow: hidden; }
+
+  /* Stat tiles */
+  .tiles { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+  .tile { padding: 16px 18px; }
+  .tile .num { font: 400 32px/1.2 "Google Sans", "Roboto", sans-serif; font-variant-numeric: tabular-nums; }
+  .tile .lbl { color: var(--muted); font-size: 12px; margin-top: 2px; }
+
+  /* Buttons: filled (.primary) / outlined (default) / tonal / text */
+  .btn { height: 36px; padding: 0 20px; border-radius: 18px; border: 1px solid var(--gm-outline); background: transparent; color: var(--accent); font: 500 14px "Google Sans", "Roboto", sans-serif; letter-spacing: 0.01em; cursor: pointer; }
+  .btn:hover { background: color-mix(in srgb, var(--accent) 8%, transparent); }
+  .btn:active { background: color-mix(in srgb, var(--accent) 12%, transparent); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
+  .btn.primary:hover { background: color-mix(in srgb, var(--accent-text) 8%, var(--accent)); box-shadow: var(--shadow-1); }
+  .btn.tonal { background: var(--gm-fab); color: var(--gm-on-fab); border-color: transparent; }
+  .btn.tonal:hover { box-shadow: var(--shadow-1); }
+  .btn.text { border-color: transparent; padding: 0 12px; }
+  .btn.danger { color: var(--bad); border-color: var(--gm-outline-variant); }
+  .btn.sm { height: 32px; padding: 0 14px; border-radius: 16px; font-size: 13px; }
+  .row-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; align-items: center; }
+
+  /* Filter chips + status colours */
+  .chip { display: inline-flex; align-items: center; height: 24px; padding: 0 10px; border-radius: 8px; border: 1px solid var(--gm-outline-variant); color: var(--muted); font-size: 12px; font-weight: 500; white-space: nowrap; }
+  .d-Easy { color: var(--easy); } .d-Medium { color: var(--medium); } .d-Hard { color: var(--hard); }
+  .score { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .big-score.score { font-weight: 400; }
+  .s-good { color: var(--good); } .s-ok { color: var(--ok); } .s-bad { color: var(--bad); }
+  .g-clean { color: var(--good); } .g-slow { color: var(--ok); } .g-failed { color: var(--bad); }
+  .title { font-weight: 500; text-decoration: none; }
+  .title:hover { text-decoration: underline; }
+  .meta { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-top: 6px; font-size: 13px; }
+  .timer { font: 500 22px "Google Sans", "Roboto", sans-serif; font-variant-numeric: tabular-nums; margin-top: 10px; color: var(--accent); }
+
+  /* Lists (Gmail rows) */
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: left; padding: 0 12px; height: 44px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  th { height: 40px; font-size: 13px; color: var(--muted); font-weight: 500; }
+  tbody tr { transition: box-shadow .1s; }
+  tbody tr:hover { background: var(--gm-hover); box-shadow: inset 1px 0 0 var(--gm-outline-variant), inset -1px 0 0 var(--gm-outline-variant), 0 1px 2px 0 rgb(60 64 67 / .3), 0 1px 3px 1px rgb(60 64 67 / .15); position: relative; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .table-wrap { overflow-x: auto; }
+  .topic { margin-top: 20px; }
+  .topic-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding: 0 4px 6px; }
+  .topic-head h3 { margin: 0; font: 500 15px "Google Sans", "Roboto", sans-serif; }
+  .prob { display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 6px 16px; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .prob:first-child { border-top: 0; }
+  .prob:hover { background: var(--gm-hover); }
+  .prob .name { flex: 1 1 220px; min-width: 0; }
+  .prob.todo .title { color: var(--muted); font-weight: 400; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gm-outline-variant); flex: none; }
+  .history { width: 100%; padding: 4px 0 4px 18px; font-size: 13px; }
+  .history td { height: 32px; padding: 0 6px; }
+  .history tbody tr:hover, .history tr:hover { box-shadow: none; }
+
+  /* Linear progress (Drive storage-meter style) */
+  .barrow { display: grid; grid-template-columns: minmax(110px, 190px) 1fr 52px; gap: 12px; align-items: center; padding: 6px 0; font-size: 14px; }
+  .track { height: 4px; background: var(--gm-surface-2); border-radius: 2px; overflow: hidden; }
+  .fill { height: 100%; border-radius: 2px; }
+  .activity { display: flex; align-items: flex-end; gap: 3px; height: 70px; }
+  .activity div { flex: 1; background: var(--accent); border-radius: 3px 3px 0 0; min-height: 2px; }
+  .activity div.zero { background: var(--gm-surface-2); }
+
+  /* Inputs */
+  .toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  input[type=number], input[type=text], textarea, select { font: inherit; color: var(--text); background: transparent; border: 1px solid var(--gm-outline); border-radius: 4px; padding: 6px 12px; min-height: 40px; }
+  select { border-radius: 8px; border-color: var(--gm-outline-variant); min-height: 32px; padding: 4px 10px; }
+  input:focus, textarea:focus, select:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+  select option { background: var(--surface); }
+
+  .banner { background: var(--gm-info); border-radius: 12px; padding: 10px 16px; margin-bottom: 16px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; font-size: 14px; }
+  .banner > span { flex: 1 1 260px; }
+  .empty { text-align: center; padding: 48px 16px; color: var(--muted); }
+
+  /* Dialog */
+  dialog { border: 0; border-radius: 28px; background: var(--surface); color: var(--text); padding: 24px; width: min(440px, calc(100vw - 32px)); box-shadow: var(--shadow-2); }
+  dialog::backdrop { background: rgb(0 0 0 / 0.32); }
+  dialog h3 { margin: 0 0 4px; font: 400 24px "Google Sans", "Roboto", sans-serif; }
+  .field { margin-top: 16px; display: grid; gap: 6px; }
+  .field label { font-size: 12px; color: var(--muted); font-weight: 500; }
+  .seg { display: flex; border: 1px solid var(--gm-outline); border-radius: 18px; overflow: hidden; }
+  .seg button { flex: 1; border: 0; border-radius: 0; color: var(--text); }
+  .seg button + button { border-left: 1px solid var(--gm-outline); }
+  .seg button.on { background: var(--gm-nav-active); color: var(--gm-on-nav-active); }
+  .seg button.on::before { content: "✓ "; }
+
+  .settings { display: flex; gap: 14px; flex-wrap: wrap; align-items: end; }
+  .settings label { display: grid; gap: 4px; font-size: 12px; color: var(--muted); }
+  .settings input { width: 90px; }
+
+  /* Snackbar, bottom-left like Gmail's */
+  .toast { position: fixed; bottom: 24px; left: 24px; max-width: calc(100vw - 48px); background: var(--gm-snackbar); color: var(--gm-on-snackbar); padding: 14px 24px; border-radius: 4px; font-size: 14px; box-shadow: var(--shadow-2); opacity: 0; transform: translateY(8px); transition: opacity .2s, transform .2s; pointer-events: none; }
+  .toast.show { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <div class="brand"><span class="logo">NC</span><span>Review</span></div>
+    <label class="search">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.1-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <input type="search" id="q" placeholder="Search problems" autocomplete="off">
+    </label>
+  </div>
+</header>
+<div class="shell">
+  <aside>
+    <button class="fab" data-act="fab-review">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Start review
+    </button>
+    <nav>
+      <button data-tab="review" class="active">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+        <span class="label">Review</span><span class="badge" id="due-badge"></span>
+      </button>
+      <button data-tab="problems">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
+        <span class="label">Problems</span><span class="badge" id="done-badge"></span>
+      </button>
+      <button data-tab="summary">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z"/></svg>
+        <span class="label">Summary</span>
+      </button>
+    </nav>
+  </aside>
+  <main>
+    <div id="banner"></div>
+    <section id="tab-review"></section>
+    <section id="tab-problems" hidden></section>
+    <section id="tab-summary" hidden></section>
+  </main>
+</div>
+
+<dialog id="log">
+  <form method="dialog" id="log-form">
+    <h3 id="log-title"></h3>
+    <div class="muted small" id="log-sub"></div>
+    <div class="field">
+      <label>Did you solve it without looking at the solution?</label>
+      <div class="seg">
+        <button type="button" class="btn" data-solved="1">Yes</button>
+        <button type="button" class="btn" data-solved="0">No</button>
+      </div>
+    </div>
+    <div class="field">
+      <label for="log-min">Minutes taken</label>
+      <input type="number" id="log-min" min="1" max="600" step="1" required>
+    </div>
+    <div class="field">
+      <label for="log-date">When</label>
+      <input type="text" id="log-date" placeholder="YYYY-MM-DD HH:MM">
+    </div>
+    <div class="field">
+      <label for="log-note">Note (optional): what tripped you up?</label>
+      <textarea id="log-note" rows="2"></textarea>
+    </div>
+    <p class="small" id="log-grade"></p>
+    <div class="row-actions" style="justify-content:flex-end">
+      <button type="button" class="btn text" id="log-cancel">Cancel</button>
+      <button type="submit" class="btn primary">Save</button>
+    </div>
+  </form>
+</dialog>
+<input type="file" id="import-file" accept="application/json,.json" hidden>
+<div class="toast" id="toast"></div>
+
+<script src="problems.js"></script>
+<script src="srs.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

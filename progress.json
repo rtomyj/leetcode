@@ -1,0 +1,114 @@
+{
+  "app": "neetcode-150-review",
+  "version": 1,
+  "settings": {
+    "slowMinutes": {
+      "Easy": 15,
+      "Medium": 25,
+      "Hard": 40
+    },
+    "sessionSize": 3
+  },
+  "problems": {
+    "container-with-most-water": {
+      "attempts": [
+        {
+          "date": "2026-10-16T22:09:00.000Z",
+          "minutes": 10,
+          "solved": true
+        }
+      ]
+    },
+    "contains-duplicate": {
+      "attempts": [
+        {
+          "date": "2026-10-27T22:07:00.000Z",
+          "minutes": 5,
+          "solved": true
+        }
+      ]
+    },
+    "group-anagrams": {
+      "attempts": [
+        {
+          "date": "2026-10-27T22:08:00.000Z",
+          "minutes": 5,
+          "solved": true
+        }
+      ]
+    },
+    "longest-consecutive-sequence": {
+      "attempts": [
+        {
+          "date": "2026-10-23T22:08:00.000Z",
+          "minutes": 5,
+          "solved": true
+        }
+      ]
+    },
+    "top-k-frequent-elements": {
+      "attempts": [
+        {
+          "date": "2026-10-27T22:08:00.000Z",
+          "minutes": 5,
+          "solved": true
+        }
+      ]
+    },
+    "two-sum": {
+      "attempts": [
+        {
+          "date": "2026-10-27T22:07:00.000Z",
+          "minutes": 5,
+          "solved": true
+        }
+      ]
+    },
+    "two-sum-ii-input-array-is-sorted": {
+      "attempts": [
+        {
+          "date": "2026-10-20T22:08:00.000Z",
+          "minutes": 5,
+          "solved": true
+        }
+      ]
+    },
+    "valid-anagram": {
+      "attempts": [
+        {
+          "date": "2026-10-27T22:07:00.000Z",
+          "minutes": 5,
+          "solved": true
+        }
+      ]
+    },
+    "valid-palindrome": {
+      "attempts": [
+        {
+          "date": "2026-10-20T22:08:00.000Z",
+          "minutes": 5,
+          "solved": true
+        }
+      ]
+    },
+    "valid-parentheses": {
+      "attempts": [
+        {
+          "date": "2026-10-18T22:09:00.000Z",
+          "minutes": 10,
+          "solved": true
+        }
+      ]
+    },
+    "valid-sudoku": {
+      "attempts": [
+        {
+          "date": "2026-10-22T22:08:00.000Z",
+          "minutes": 5,
+          "solved": true
+        }
+      ]
+    }
+  },
+  "deleted": []
+}
