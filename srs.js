@@ -49,8 +49,9 @@ function applyAttempt(state, grade, when) {
     stability = stability * (1 + (ease - 1) * forgotten);
     ease = Math.min(MAX_EASE, ease + 0.1);
   } else if (grade === "slow") {
-    stability = stability * (1 + 0.2 * forgotten);
-    ease = Math.max(MIN_EASE, ease - 0.15);
+    // Solved, just over time: half the clean growth, ease unchanged. Shrinking
+    // ease here would trap a consistently slow problem in a ~2-day loop.
+    stability = stability * (1 + (ease - 1) * 0.5 * forgotten);
   } else {
     stability = Math.max(0.5, stability * 0.3);
     ease = Math.max(MIN_EASE, ease - 0.3);

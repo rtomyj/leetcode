@@ -19,6 +19,15 @@ assert(clean.stability > 15, "intervals grow: " + clean.stability);
 const failed = S.analyze([{ date: at(0), minutes: 10, solved: true }, { date: at(3), minutes: 30, solved: false }], "Easy", t0 + 3 * D);
 assert(failed.stability < 1.5);
 
+// Slow-but-solved reviews still grow the interval (slower than clean), so a
+// problem you keep solving slowly doesn't come back every couple of days forever.
+let slowState = S.applyAttempt(null, "slow", t0);
+for (let i = 0; i < 6; i++) slowState = S.applyAttempt(slowState, "slow", slowState.lastReview + slowState.stability * D);
+assert(slowState.stability > 10, "slow reviews escape the short loop: " + slowState.stability);
+const afterSlow = S.applyAttempt({ stability: 3, ease: 2.5, lastReview: t0 }, "slow", t0 + 3 * D);
+const afterClean = S.applyAttempt({ stability: 3, ease: 2.5, lastReview: t0 }, "clean", t0 + 3 * D);
+assert(afterSlow.stability < afterClean.stability, "slow grows less than clean");
+
 // Reviewing early earns less than reviewing on time.
 const early = S.analyze([0, 0.5].map((d) => ({ date: at(d), minutes: 10, solved: true })), "Easy", t0 + D);
 assert(early.stability < 4, "early review barely grows: " + early.stability);
