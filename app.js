@@ -52,14 +52,22 @@ function attemptsOf(slug) {
   return store.problems[slug]?.attempts ?? [];
 }
 
-function infoFor(slug, now = Date.now()) {
-  return analyze(attemptsOf(slug), PROBLEMS[slug].difficulty, now, store.settings);
+function rotationSlugs() {
+  return Object.keys(store.problems).filter((slug) => PROBLEMS[slug] && attemptsOf(slug).length);
+}
+
+// When each problem in the rotation was first attempted.
+function rotationStarts() {
+  return rotationSlugs().map((slug) => Math.min(...attemptsOf(slug).map((a) => new Date(a.date).getTime())));
+}
+
+function infoFor(slug, now = Date.now(), starts = rotationStarts()) {
+  return analyze(attemptsOf(slug), PROBLEMS[slug].difficulty, now, store.settings, starts);
 }
 
 function rotation(now = Date.now()) {
-  return Object.keys(store.problems)
-    .filter((slug) => PROBLEMS[slug] && attemptsOf(slug).length)
-    .map((slug) => ({ ...PROBLEMS[slug], info: infoFor(slug, now) }));
+  const starts = rotationStarts();
+  return rotationSlugs().map((slug) => ({ ...PROBLEMS[slug], info: infoFor(slug, now, starts) }));
 }
 
 // ---------- formatting ----------
@@ -188,7 +196,7 @@ function renderReview() {
     return;
   }
   const due = items.filter((i) => i.info.isDue);
-  const pool = items.filter((i) => !skipped.has(i.slug));
+  const pool = sessionPool(items).filter((i) => !skipped.has(i.slug));
   const session = pickSession(pool, store.settings.sessionSize);
   const extra = due.length === 0;
 
@@ -263,10 +271,12 @@ function renderProblems() {
   }
   $("#done-count").textContent = `· ${done}/150 completed`;
 
+  const now = Date.now();
+  const starts = rotationStarts();
   $("#plist").innerHTML = TOPICS.map((topic) => {
     const all = NEETCODE_150[topic].map(([slug]) => PROBLEMS[slug]);
     const doneHere = all.filter((p) => attemptsOf(p.slug).length);
-    const avg = doneHere.length ? doneHere.reduce((s, p) => s + infoFor(p.slug).score, 0) / doneHere.length : null;
+    const avg = doneHere.length ? doneHere.reduce((s, p) => s + infoFor(p.slug, now, starts).score, 0) / doneHere.length : null;
     const visible = all.filter((p) => {
       const isDone = attemptsOf(p.slug).length > 0;
       if (filter.show === "done" && !isDone) return false;
@@ -277,21 +287,21 @@ function renderProblems() {
     return `<div class="topic">
       <div class="topic-head"><h3>${esc(topic)}</h3>
         <span class="small muted">${doneHere.length}/${all.length}${avg !== null ? ` · <span class="score ${scoreClass(avg)}">${pct(avg)}</span>` : ""}</span></div>
-      <div class="card flat">${visible.map(problemRow).join("")}</div>
+      <div class="card flat">${visible.map((p) => problemRow(p, now, starts)).join("")}</div>
     </div>`;
   }).join("") || `<div class="empty">No matches.</div>`;
 }
 
 const openHistory = new Set();
 
-function problemRow(p) {
+function problemRow(p, now, starts) {
   const attempts = attemptsOf(p.slug);
   if (!attempts.length) {
     return `<div class="prob todo"><span class="dot"></span>
       <span class="name">${lcLink(p)}</span>${diffChip(p)}
       <button class="btn sm" data-act="complete" data-slug="${p.slug}">Mark completed</button></div>`;
   }
-  const i = infoFor(p.slug);
+  const i = infoFor(p.slug, now, starts);
   const open = openHistory.has(p.slug);
   return `<div class="prob"><span class="dot" style="background:${scoreColor(i.score)}"></span>
     <span class="name">${lcLink(p)}</span>${diffChip(p)}
@@ -383,7 +393,7 @@ function renderSummary() {
       <div class="card tile"><div class="num">${s.struggling}</div><div class="lbl">Struggling (&lt;70% or last failed)</div></div>
       <div class="card tile"><div class="num">${s.reviews7d}</div><div class="lbl">Solves in last 7 days</div></div>
     </div>
-    <p class="small muted">Understanding = estimated chance you'd solve the problem cleanly right now. It drops over time and rebounds when you review.
+    <p class="small muted">Understanding = estimated chance you'd solve the problem cleanly right now. It drops over time, more slowly the more problems are in rotation, and rebounds when you review.
       Readiness counts problems you haven't done as 0%.</p>
 
     <h2>By topic</h2>
@@ -486,7 +496,7 @@ function aiReport() {
   );
   lines.push("## How to read this", "");
   lines.push(
-    `- **Understanding** = model-estimated probability I'd solve it cleanly right now (decays over time, rises with successful reviews).`,
+    `- **Understanding** = model-estimated probability I'd solve it cleanly right now (decays over time, more slowly the more problems are in rotation, rises with successful reviews).`,
     `- **Grades**: clean = solved within time limit; slow = solved but over the limit (Easy ${x.settings.slowMinutes.Easy} / Medium ${x.settings.slowMinutes.Medium} / Hard ${x.settings.slowMinutes.Hard} min); failed = couldn't solve without help.`,
     ""
   );
@@ -624,9 +634,10 @@ document.addEventListener("click", async (e) => {
   const slug = b.dataset.slug;
   switch (b.dataset.act) {
     case "fab-review": {
-      const pool = rotation().filter((i) => !skipped.has(i.slug));
-      if (!pool.length) return showTab("problems");
-      if (!timer) setTimer({ slug: pickSession(pool, 1)[0].slug, start: Date.now() });
+      const items = rotation();
+      if (!items.length) return showTab("problems");
+      const pool = sessionPool(items).filter((i) => !skipped.has(i.slug));
+      if (!timer && pool.length) setTimer({ slug: pickSession(pool, 1)[0].slug, start: Date.now() });
       showTab("review");
       break;
     }

@@ -28,7 +28,9 @@ Three classic `<script>` files loaded in order by `index.html`, sharing globals 
 - Each attempt is graded `clean` / `slow` / `failed`: unsolved = failed; solved but over `settings.slowMinutes[difficulty]` = slow.
 - Per problem, a **stability** S (days) evolves by replaying attempts; recall decays as `R = 0.9^(days/S)`. R *is* the understanding score, a problem is due when R ≤ 0.9, and the queue sorts by `priority()` (1 − R plus a small boost for a recent struggle).
 - Clean-review growth is scaled by how much had been forgotten, so reviewing early earns less.
-- `pickSession` takes at most one problem per topic before repeating a topic.
+- Starting stability is scaled by difficulty (`DIFFICULTY_STABILITY`: Easy 1, Medium 0.75, Hard 0.5), so harder problems decay faster and come due sooner.
+- Decay slows as the rotation grows (`rotationStretch`: √(size/10), minimum 1). Size is derived from each problem's first-attempt time (`rotationStarts`), so reads use today's size and replay judges each review by the size on its date. Logging a new problem therefore shifts every score and due date slightly, and deleting a problem's history can change other problems' intervals.
+- `sessionPool` limits a session to due problems, falling back to the whole rotation only when nothing is due. `pickSession` then takes at most one problem per topic before repeating a topic.
 
 ### Key invariant: only the raw attempt log is stored
 
